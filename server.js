@@ -1,11 +1,13 @@
-var restify = require('restify');
 var builder = require('botbuilder');
-
-// Setup Restify Server
-var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 5000, function () {
-   console.log('%s listening to %s', server.name, server.url); 
-});
+var express = require('express');
+var https = require('https');
+var http = require('http');
+var apiairecognizer = require('api-ai-recognizer');
+var recognizer = new apiairecognizer("ebac356c08ec4fb2b3114a51df618d79");
+var server = express();
+var port = process.env.PORT || process.env.port || 5000;
+server.use(express.static(__dirname + '/Views'));
+server.listen(port);
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
@@ -13,10 +15,55 @@ var connector = new builder.ChatConnector({
     appPassword: "UQna86whcmvC6VOFBZY3KRX"
 });
 
+var bot = new builder.UniversalBot(connector); 
+
+var intents = new builder.IntentDialog({ recognizers: [recognizer] }); 
+
+bot.dialog('/',intents); 
+
+intents.matches('Question_Intent',function(session, args){ 
+	var fulfillment = builder.EntityRecognizer.findEntity(args.entities,'fulfillment');
+     if (fulfillment) {
+        var speech = fulfillment.entity;          
+        session.send(speech);
+     }
+});
+
+intents.matches('Human_Support_Intent',function(session, args){ 
+    var fulfillment = builder.EntityRecognizer.findEntity(args.entities,'fulfillment');
+     if (fulfillment) {
+        var speech = fulfillment.entity;          
+        session.send(speech);
+     }
+});
+
+
+intents.matches('Default Welcome Intent',function(session, args){ 
+	var fulfillment = builder.EntityRecognizer.findEntity(args.entities,'fulfillment');
+     if (fulfillment) {
+        var speech = fulfillment.entity;          
+        session.send(speech);
+     }
+});
+
+intents.matches('Default Fallback Intent',function(session, args){ 
+    var fulfillment = builder.EntityRecognizer.findEntity(args.entities,'fulfillment');
+     if (fulfillment) {
+        var speech = fulfillment.entity;          
+        session.send(speech);
+     }
+});
+
+
+// Listen for messages from users 
+server.get('/', function (req, res) {
+  res.sendFile( __dirname + "/Views/" + "index.html" );
+});
+
+server.get('/mitr', function (req, res) {
+  res.sendFile( __dirname + "/Views/" + "mitr.html" );
+});
+
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
 
-// Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
-var bot = new builder.UniversalBot(connector, function (session) {
-    session.send("You said: %s", session.message.text);
-});

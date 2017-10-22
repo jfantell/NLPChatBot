@@ -19,6 +19,9 @@
   "homepage": "https://github.com/jfantell/NLPChatBot#readme",
   "dependencies": {
     "botbuilder": "^3.11.0",
-    "restify": "^6.0.1"
+    "express": "*",
+    "http":"*",
+    "https":"*",
+    "api-ai-recognizer":"*"
   }
 }
