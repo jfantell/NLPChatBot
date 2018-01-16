@@ -22,6 +22,7 @@
     "express": "*",
     "http":"*",
     "https":"*",
-    "api-ai-recognizer":"*"
+    "api-ai-recognizer":"*",
+    "request":"*"
   }
 }
