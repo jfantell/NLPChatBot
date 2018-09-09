@@ -20,9 +20,9 @@
   "dependencies": {
     "botbuilder": "^3.11.0",
     "express": "*",
-    "http":"*",
-    "https":"*",
-    "api-ai-recognizer":"*",
-    "request":"*"
+    "http": "*",
+    "https": "*",
+    "api-ai-recognizer": "*",
+    "request": "*"
   }
 }

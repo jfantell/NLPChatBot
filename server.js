@@ -5,7 +5,7 @@ var http = require('http');
 var apiairecognizer = require('api-ai-recognizer');
 var recognizer = new apiairecognizer("ebac356c08ec4fb2b3114a51df618d79");
 var server = express();
-var port = process.env.PORT || process.env.port || 5000;
+var port = process.env.PORT || process.env.port || 5001;
 var util = require('./utility_functions');
 server.use(express.static(__dirname + '/Views'));
 server.listen(port, function(){
@@ -57,17 +57,13 @@ bot.dialog('Question-Dialog', function(session,args) {
               ])
       ]);
       session.send(msg);
-}).triggerAction( { matches: 'Question_Intent' } );
+    }).triggerAction( { matches: 'Question_Intent' } );
+});
 
 // Listen for messages from users 
 server.get('/', function (req, res) {
   res.sendFile( __dirname + "/Views/" + "index.html" );
 });
 
-server.get('/mitr', function (req, res) {
-  res.sendFile( __dirname + "/Views/" + "mitr.html" );
-});
-
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
-
