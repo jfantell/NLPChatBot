@@ -57,8 +57,15 @@ bot.dialog('Question-Dialog', function(session,args) {
               ])
       ]);
       session.send(msg);
-    }).triggerAction( { matches: 'Question_Intent' } );
-});
+    });
+}).triggerAction( { matches: 'Question_Intent' } );
+
+
+bot.dialog('Fallback-Dialog', function(session,args) {
+    console.log('Entered Fallback-Dialog');
+    session.send(`Sorry, I do not understand your question. Please try rephrasing your question.`);
+}).triggerAction( { matches: 'Default Fallback Intent' } );
+
 
 // Listen for messages from users 
 server.get('/', function (req, res) {
